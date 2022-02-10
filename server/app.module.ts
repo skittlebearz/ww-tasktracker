@@ -9,6 +9,7 @@ import { RolesGuard } from './providers/guards/roles.guard';
 import { JwtService } from './providers/services/jwt.service';
 import { RolesService } from './providers/services/roles.service';
 import { UsersService } from './providers/services/users.service';
+import { ProjectsService } from './providers/services/projects.service';
 import { GuardUtil } from './providers/util/guard.util';
 
 @Module({
@@ -17,6 +18,7 @@ import { GuardUtil } from './providers/util/guard.util';
   providers: [
     UsersService,
     RolesService,
+    ProjectsService,
     JwtService,
     GuardUtil,
     { provide: APP_GUARD, useClass: AuthGuard }, // auth guard should come before roles guard
