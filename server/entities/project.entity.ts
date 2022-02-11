@@ -1,3 +1,4 @@
+import { Generated } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from 'typeorm';
 //import { UserProject } from './project_user.entity'; 
 
@@ -13,8 +14,8 @@ export class Project {
   title: String;
 
   @Column()
-  contextId: number;
-  //I'm not sure if this can be set to randomly generate here
+  @Generated("uuid") //This should or may not create a random unique contextId
+  contextId: string;
 
   //@OneToMany(() => Task, (task) => project.task)
   //tasks: task[];
