@@ -1,10 +1,7 @@
+import { Entity, PrimaryGeneratedColumn, OneToMany, ManyToMany, Column } from 'typeorm';
 import { Generated } from 'typeorm';
-import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from 'typeorm';
-import { Task } from './task.entity'
-//import { UserProject } from './project_user.entity'; 
-
-//TODO: Remove comments when other files are available
-//TODO: Test functionality
+import { User } from './user.entity';
+import { Task } from './task.entity';
 
 @Entity()
 export class Project {
@@ -12,10 +9,10 @@ export class Project {
   id: number;
 
   @Column()
-  title: String;
+  title: string;
 
   @Column()
-  @Generated("uuid") //This should or may not create a random unique contextId
+  @Generated('uuid') //This should or may not create a random unique contextId
   contextId: string;
 
   @OneToMany(() => Task, (task) => task.project)
@@ -24,6 +21,6 @@ export class Project {
   @Column()
   leaderId: number;
 
-  //@OneToMany(() => UserProject, (userProject) => userProject.user)
-  //userProjects: userProject[];
+  @ManyToMany(() => User, (user) => user.projects)
+  user: User;
 }
