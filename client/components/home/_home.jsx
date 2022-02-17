@@ -34,6 +34,8 @@ export const Home = () => {
   return (
     <div className="p-4">
       <h1>Welcome {user.firstName}</h1>
+      <h1>Your Projects:</h1>
+      <p>Why isn't it working?</p>
       <Button type="button" onClick={logout}>
         Logout
       </Button>
