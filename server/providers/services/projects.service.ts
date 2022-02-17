@@ -32,4 +32,5 @@ export class ProjectsService {
   // addUsers(users: User[]) {
     
   // }
+  //Currently unused, we're adding projects to users instead
 }

@@ -23,6 +23,7 @@ export class ProjectsController {
 
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
+    console.log(jwtBody.userId);
     const projects = await this.projectsService.findAllForUser(jwtBody.userId);
     return { projects };
   }
@@ -42,9 +43,7 @@ export class ProjectsController {
 
 
     //This should set up the many-many relationship, depending on userProject implementation
-    //const userProject = new UserProject();
-    //userProject.userId = jwtBody.userId;
-    //userProject.projectId = project.id;
+    //Add project to current user
 
 
     //Create the userRole with the correct context and Role
