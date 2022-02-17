@@ -5,6 +5,7 @@ import { UserRole } from './user_role.entity';
 export enum RoleKey {
   ADMIN = 'admin',
   USER = 'user',
+  LEADER = 'leader',
 }
 
 @Entity()

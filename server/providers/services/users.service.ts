@@ -6,6 +6,7 @@ import { User } from '../../entities/user.entity';
 import { Role, RoleKey } from 'server/entities/role.entity';
 import { UserRole } from 'server/entities/user_role.entity';
 import { intersection, isEmpty } from 'lodash';
+import { Project } from 'server/entities/project.entity';
 
 @Injectable()
 export class UsersService {
