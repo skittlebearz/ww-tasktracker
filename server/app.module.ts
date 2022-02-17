@@ -11,14 +11,18 @@ import { RolesService } from './providers/services/roles.service';
 import { UsersService } from './providers/services/users.service';
 import { ProjectsService } from './providers/services/projects.service';
 import { GuardUtil } from './providers/util/guard.util';
+import { ProjectsModule } from './modules/projects.module';
+import { TasksModule } from './modules/tasks.module';
+import { TasksService } from './providers/services/tasks.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), UsersModule],
+  imports: [TypeOrmModule.forRoot(config), UsersModule, ProjectsModule, TasksModule],
   controllers: [AppController],
   providers: [
     UsersService,
     RolesService,
-    ProjectsService,
+    // ProjectsService,
+    // TasksService,
     JwtService,
     GuardUtil,
     { provide: APP_GUARD, useClass: AuthGuard }, // auth guard should come before roles guard

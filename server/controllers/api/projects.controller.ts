@@ -3,7 +3,10 @@ import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
 import { User } from 'server/entities/user.entity';
+import { UserRole } from 'server/entities/user_role.entity';
 import { ProjectsService } from 'server/providers/services/projects.service';
+import { UsersService } from 'server/providers/services/users.service';
+import { RoleKey } from 'server/entities/role.entity'
 //import { UserProject } from 'server/entities/user_project.entity';
 
 class ProjectTitle {
@@ -16,7 +19,7 @@ class NewData {
 
 @Controller()
 export class ProjectsController {
-  constructor(private projectsService: ProjectsService) {}
+  constructor(private projectsService: ProjectsService, private usersService: UsersService) {}
 
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
@@ -32,14 +35,20 @@ export class ProjectsController {
 
   @Post('/projects')
   public async create(@JwtBody() jwtBody: JwtBodyDto, @Body() title: ProjectTitle) {
+    //Create the new project, could probably be improved with a better constructor
     let project = new Project();
     project.title = title.title;
     project.leaderId = jwtBody.userId;
 
+
+    //This should set up the many-many relationship, depending on userProject implementation
     //const userProject = new UserProject();
     //userProject.userId = jwtBody.userId;
     //userProject.projectId = project.id;
-    //This should set up the many-many relationship, depending on userProject implementation
+
+
+    //Create the userRole with the correct context and Role
+    await this.usersService.addUserToRoleInContext(jwtBody.userId, project.contextId, RoleKey.LEADER);
 
     project = await this.projectsService.createProject(project);
     return { project };
