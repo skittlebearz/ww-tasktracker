@@ -8,9 +8,10 @@ import { ProjectsService } from 'server/providers/services/projects.service';
 import { UsersService } from 'server/providers/services/users.service';
 import { RoleKey } from 'server/entities/role.entity'
 //import { UserProject } from 'server/entities/user_project.entity';
+import * as crypto from 'crypto';
 
 class ProjectTitle {
-  title: string;
+  contents: string;
 }
 
 class NewData {
@@ -38,18 +39,20 @@ export class ProjectsController {
   public async create(@JwtBody() jwtBody: JwtBodyDto, @Body() title: ProjectTitle) {
     //Create the new project, could probably be improved with a better constructor
     let project = new Project();
-    project.title = title.title;
-    project.leaderId = jwtBody.userId;
+    project.title = title.contents;
+    project.leaderID = jwtBody.userId;
+    project.contextId = crypto.randomBytes(16).toString("hex");
+
+    project = await this.projectsService.createProject(project);
 
 
     //This should set up the many-many relationship, depending on userProject implementation
     //Add project to current user
-
+    await this.usersService.addUserToProject(jwtBody.userId, project.id)
 
     //Create the userRole with the correct context and Role
     await this.usersService.addUserToRoleInContext(jwtBody.userId, project.contextId, RoleKey.LEADER);
 
-    project = await this.projectsService.createProject(project);
     return { project };
   }
 

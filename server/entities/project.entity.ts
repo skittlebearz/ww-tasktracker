@@ -19,7 +19,7 @@ export class Project {
   tasks: Task[];
 
   @Column()
-  leaderId: number;
+  leaderID: number;
 
   @OneToMany(() => UserProject, (userProject) => userProject.project)
   userProjects: UserProject[];

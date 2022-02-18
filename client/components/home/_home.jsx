@@ -23,6 +23,7 @@ export const Home = () => {
 
     //Get the projects
     const { projects } = await api.get('/projects');
+    console.log(projects); // This puts all the projects in the dev console just as proof it works
     setProjects(projects);
 
     setLoading(false);

@@ -10,7 +10,7 @@ export enum RoleKey {
 
 @Entity()
 export class Role {
-  static ROLES = [RoleKey.ADMIN, RoleKey.USER];
+  static ROLES = [RoleKey.ADMIN, RoleKey.USER, RoleKey.LEADER];
 
   @PrimaryGeneratedColumn()
   id: number;
