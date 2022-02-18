@@ -7,6 +7,7 @@ import { Role, RoleKey } from 'server/entities/role.entity';
 import { UserRole } from 'server/entities/user_role.entity';
 import { intersection, isEmpty } from 'lodash';
 import { Project } from 'server/entities/project.entity';
+import { UserProject } from 'server/entities/user_project.entity';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,10 @@ export class UsersService {
     private userRolesRepository: Repository<UserRole>,
     @InjectRepository(Role)
     private rolesRepository: Repository<Role>,
+    @InjectRepository(UserProject)
+    private userProjectsRepository: Repository<UserProject>,
+    @InjectRepository(Project)
+    private projectsRepository: Repository<Project>,
   ) {}
 
   findAll(relations: string[] = []) {
@@ -53,6 +58,16 @@ export class UsersService {
         await this.userRolesRepository.save(userRole);
       }),
     );
+  }
+
+  addUserToProjectInContext(userId: number, projectId: number, contextId: string) { // If this works it'll be a miracle
+    return async () => {
+      const userProject = new UserProject();
+      userProject.userId = userId;
+      userProject.contextId = contextId;
+      userProject.projectId = projectId;
+      await this.userProjectsRepository.save(userProject);
+    };
   }
 
   addUserToRootRole(userId: number, ...roleKeys: RoleKey[]) {
