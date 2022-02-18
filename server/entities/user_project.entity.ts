@@ -13,9 +13,6 @@ export class UserProject {
   @Column()
   userId: number;
 
-  @Column()
-  contextId: string;
-
   @ManyToOne(() => Project, (project) => project.userProjects)
   project: Project;
 

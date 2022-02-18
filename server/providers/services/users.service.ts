@@ -60,14 +60,11 @@ export class UsersService {
     );
   }
 
-  addUserToProjectInContext(userId: number, projectId: number, contextId: string) { // If this works it'll be a miracle
-    return async () => {
+  addUserToProject(userId: number, projectId: number) {
       const userProject = new UserProject();
       userProject.userId = userId;
-      userProject.contextId = contextId;
       userProject.projectId = projectId;
-      await this.userProjectsRepository.save(userProject);
-    };
+      return this.userProjectsRepository.save(userProject);
   }
 
   addUserToRootRole(userId: number, ...roleKeys: RoleKey[]) {
