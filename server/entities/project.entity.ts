@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, OneToMany, ManyToMany, Column } from 'typeorm';
 import { Generated } from 'typeorm';
-import { User } from './user.entity';
 import { Task } from './task.entity';
+import { UserProject } from './user_project.entity';
 
 @Entity()
 export class Project {
@@ -12,7 +12,7 @@ export class Project {
   title: string;
 
   @Column()
-  @Generated('uuid') //This should or may not create a random unique contextId
+  @Generated('uuid') //This may or may not create a random unique contextId
   contextId: string;
 
   @OneToMany(() => Task, (task) => task.project)
@@ -21,6 +21,6 @@ export class Project {
   @Column()
   leaderId: number;
 
-  @ManyToMany(() => User, (user) => user.projects)
-  user: User;
+  @OneToMany(() => UserProject, (userProject) => userProject.project)
+  userProjects: UserProject[];
 }
