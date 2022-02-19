@@ -26,16 +26,16 @@ export class ProjectsService {
     this.projectRepository.delete(project);
   }
 
-  async findAllForUser(userId: number) : Promise<Project[]> {
-		const userProjects = await this.userProjectRepository.find({
-			where: { userId },
-      relations: [ 'project' ],
-		}); 
+  async findAllForUser(userId: number): Promise<Project[]> {
+    const userProjects = await this.userProjectRepository.find({
+      where: { userId },
+      relations: ['project'],
+    });
     return userProjects.map((userProject) => userProject.project);
   }
 
   // addUsers(users: User[]) {
-    
+
   // }
   //Currently unused, we're adding projects to users instead
 }

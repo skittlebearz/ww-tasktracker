@@ -6,7 +6,7 @@ import { User } from 'server/entities/user.entity';
 import { UserRole } from 'server/entities/user_role.entity';
 import { ProjectsService } from 'server/providers/services/projects.service';
 import { UsersService } from 'server/providers/services/users.service';
-import { RoleKey } from 'server/entities/role.entity'
+import { RoleKey } from 'server/entities/role.entity';
 //import { UserProject } from 'server/entities/user_project.entity';
 import * as crypto from 'crypto';
 
@@ -15,7 +15,7 @@ class ProjectTitle {
 }
 
 class NewData {
-  users: User[]
+  users: User[];
 }
 
 @Controller()
@@ -41,14 +41,13 @@ export class ProjectsController {
     let project = new Project();
     project.title = title.contents;
     project.leaderID = jwtBody.userId;
-    project.contextId = crypto.randomBytes(16).toString("hex");
+    project.contextId = crypto.randomBytes(16).toString('hex');
 
     project = await this.projectsService.createProject(project);
 
-
     //This should set up the many-many relationship, depending on userProject implementation
     //Add project to current user
-    await this.usersService.addUserToProject(jwtBody.userId, project.id)
+    await this.usersService.addUserToProject(jwtBody.userId, project.id);
 
     //Create the userRole with the correct context and Role
     await this.usersService.addUserToRoleInContext(jwtBody.userId, project.contextId, RoleKey.LEADER);
@@ -65,5 +64,4 @@ export class ProjectsController {
     }
     //I don't think adding new tasks works through a patch
   }
-
 }

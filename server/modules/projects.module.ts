@@ -10,9 +10,9 @@ import { UserRole } from 'server/entities/user_role.entity';
 import { UserProject } from 'server/entities/user_project.entity';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Project, User, Role, UserRole, UserProject])],
-	controllers: [ProjectsController],
-	providers: [ProjectsService, UsersService],
-	exports: [],
+  imports: [TypeOrmModule.forFeature([Project, User, Role, UserRole, UserProject])],
+  controllers: [ProjectsController],
+  providers: [ProjectsService, UsersService],
+  exports: [],
 })
 export class ProjectsModule {}

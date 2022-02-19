@@ -7,9 +7,9 @@ import { Button } from '../common/button';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
-  const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [projectName, setProjectName] = useState('');
+  const [taskName, setTaskName] = useState('');
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
 
@@ -22,9 +22,10 @@ export const Home = () => {
     setUser(res.user);
 
     //Get the projects
-    const { projects } = await api.get('/projects');
-    console.log(projects); // This puts all the projects in the dev console just as proof it works
-    setProjects(projects);
+    const { project } = await api.get('/project/id');
+    const { tasks } = await api.get('/project/tasks');
+    console.log(tasks); // This puts all the projects in the dev console just as proof it works
+    setTasks(tasks);
 
     setLoading(false);
   }, []);
@@ -36,19 +37,17 @@ export const Home = () => {
     }
   };
 
-  const createProject = async () => {
+  const createTask = async () => {
     setErrorMessage('');
 
-    if (projectName === '') {
-      setErrorMessage("Projects must have a name");
+    if (taskName === '') {
+      setErrorMessage('Tasks must have a name');
       return;
     }
-    //Create an object with the name to pass to the project controller
-    const projectTitle = {
-      contents: projectName,
+    const taskTitle = {
+      contents: taskName,
     };
-    //Pass to the controller
-    const { project } = await api.post('/projects', projectTitle);
+    const { task } = await api.post('/tasks', projectTask);
 
     //Add to displayed list
     setProjects([...projects, project]);
@@ -60,15 +59,14 @@ export const Home = () => {
 
   return (
     <div className="p-4">
-      <h1>Welcome {user.firstName}</h1>
+      <h1>Project {project.projectName}</h1>
 
-      <h1>Your Projects:</h1>
       <div className="flex-1">
-        {projects.map((project) => (
-          <div key={project.id} className="border-2 rounded p-4">
-            {project.title}
+        {this.state.project.map((task) => (
+          <div key={task.id} className="border-2 rounded p-4">
+            {task.title}
             <div>
-              <Button onClick={() => navigate('/project/:id')}>Details</Button>
+              <Button onClick={() => navigate('/project/:id')}>Complete</Button>
             </div>
           </div>
         ))}
@@ -78,20 +76,11 @@ export const Home = () => {
       <textarea
         className="p-2 border-2 rounded flex"
         value={projectName}
-        onChange={(e) => setProjectName(e.target.value)}
+        onChange={(e) => setTaskName(e.target.value)}
       />
-      <Button onClick={createProject}>Create</Button>
+      <Button onClick={createTask}>Create</Button>
 
       <div className="text-red-600">{errorMessage}</div>
-
-      <Button type="button" onClick={logout}>
-        Logout
-      </Button>
-      {roles.includes('admin') && (
-        <Button type="button" onClick={() => navigate('/admin')}>
-          Admin
-        </Button>
-      )}
     </div>
   );
 };
