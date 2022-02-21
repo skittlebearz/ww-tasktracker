@@ -40,7 +40,7 @@ export const Home = () => {
     setErrorMessage('');
 
     if (projectName === '') {
-      setErrorMessage("Projects must have a name");
+      setErrorMessage('Projects must have a name');
       return;
     }
     //Create an object with the name to pass to the project controller
@@ -68,7 +68,7 @@ export const Home = () => {
           <div key={project.id} className="border-2 rounded p-4">
             {project.title}
             <div>
-              <Button onClick={() => navigate('/project/:id')}>Details</Button>
+              <Button onClick={(() => navigate('/project/${project.id}'), { proj: project })}>Details</Button>
             </div>
           </div>
         ))}

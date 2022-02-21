@@ -22,6 +22,12 @@ export class TasksController {
     return { tasks };
   }
 
+  // @Get('/tasks')
+  // public async projIdIndex(@Param('projId') projId: string) {
+  //   const tasks = await this.tasksService.findAllForProject(parseInt(projId, 10));
+  //   return { tasks };
+  // }
+
   @Post('/tasks')
   public async create(@JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskPostBody) {
     let task = new Task();

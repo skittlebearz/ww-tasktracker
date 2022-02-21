@@ -2,40 +2,38 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
-import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
 
-export const Home = () => {
+export const Project = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [taskName, setTaskName] = useState('');
   const api = useContext(ApiContext);
-  const roles = useContext(RolesContext);
+
+  const projId = route.paramsl.get.id;
 
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  //const [project, setProject] = useState(null);
+
   useEffect(async () => {
     const res = await api.get('/users/me');
     setUser(res.user);
 
-    //Get the projects
-    const { project } = await api.get('/project/id');
+    //Get the project
+    //const { project } = await api.get('/project/id');
+    //setProject(res.project);
+
+    //Get the tasks
     const { tasks } = await api.get('/project/tasks');
-    console.log(tasks); // This puts all the projects in the dev console just as proof it works
+    console.log(tasks); // This puts all the tasks in the dev console just as proof it works
     setTasks(tasks);
 
     setLoading(false);
   }, []);
-
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
 
   const createTask = async () => {
     setErrorMessage('');
@@ -50,7 +48,7 @@ export const Home = () => {
     const { task } = await api.post('/tasks', projectTask);
 
     //Add to displayed list
-    setProjects([...projects, project]);
+    setTasks([...tasks, task]);
   };
 
   if (loading) {
@@ -72,12 +70,8 @@ export const Home = () => {
         ))}
       </div>
 
-      <h2>Create Project:</h2>
-      <textarea
-        className="p-2 border-2 rounded flex"
-        value={projectName}
-        onChange={(e) => setTaskName(e.target.value)}
-      />
+      <h2>Create New Task:</h2>
+      <textarea className="p-2 border-2 rounded flex" value={taskName} onChange={(e) => setTaskName(e.target.value)} />
       <Button onClick={createTask}>Create</Button>
 
       <div className="text-red-600">{errorMessage}</div>
