@@ -30,8 +30,8 @@ export class ProjectsController {
   }
 
   @Get('/projects/:id')
-  public async idIndex(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
-    const project = await this.projectsService.findProjectById(parseInt(id, 10));
+  public async idIndex(@Param('id') id: string) {
+    const project = await this.projectsService.findProjectById(id);
     return { project };
   }
 

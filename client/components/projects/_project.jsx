@@ -34,9 +34,9 @@ export const Project = () => {
     console.log(id);
 
     //Get the tasks
-    const { tasks } = await api.get(`/project/${id}/tasks`);
-    console.log(tasks); // This puts all the tasks in the dev console just as proof it works
-    setTasks(tasks);
+    // const { tasks } = await api.get(`/project/${id}/tasks`);
+    // console.log(tasks); // This puts all the tasks in the dev console just as proof it works
+    // setTasks(tasks);
 
     setLoading(false);
   }, []);

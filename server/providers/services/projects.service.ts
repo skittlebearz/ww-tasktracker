@@ -18,8 +18,10 @@ export class ProjectsService {
     return this.projectRepository.save(project);
   }
 
-  findProjectById(id: number) {
-    return this.projectRepository.findOne(id);
+  findProjectById(contextId: string) {
+    return this.projectRepository.findOne({
+      where: { contextId },
+    });
   }
 
   removeProject(project: Project) {

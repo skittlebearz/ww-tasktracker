@@ -6,7 +6,7 @@ import { Task } from 'server/entities/task.entity';
 import { TasksService } from 'server/providers/services/tasks.service';
 
 class TaskPostBody {
-  parentProject: number;
+  parentProject: string;
   completionStatus: boolean;
   title: string;
   description: string;
