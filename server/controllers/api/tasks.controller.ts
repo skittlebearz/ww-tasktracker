@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, Param, Post } from '@nestjs/common';
+import { identity } from 'lodash';
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Task } from 'server/entities/task.entity';
@@ -16,20 +17,20 @@ class TaskPostBody {
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  @Get('/tasks')
-  public async index(@JwtBody() jwtBody: JwtBodyDto) {
-    const tasks = await this.tasksService.findAllForUser(jwtBody.userId);
-    return { tasks };
-  }
-
   // @Get('/tasks')
-  // public async projIdIndex(@Param('projId') projId: string) {
-  //   const tasks = await this.tasksService.findAllForProject(parseInt(projId, 10));
+  // public async index(@JwtBody() jwtBody: JwtBodyDto) {
+  //   const tasks = await this.tasksService.findAllForUser(jwtBody.userId);
   //   return { tasks };
   // }
 
-  @Post('/tasks')
-  public async create(@JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskPostBody) {
+  @Get('/project/:id/tasks')
+  public async projIdIndex(@Param('id') id: string) {
+    const tasks = await this.tasksService.findAllForProject(id);
+    return { tasks };
+  }
+
+  @Post('/projects/:id/task')
+  public async create(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskPostBody) {
     let task = new Task();
     task.userId = jwtBody.userId;
     task.parentProject = body.parentProject;

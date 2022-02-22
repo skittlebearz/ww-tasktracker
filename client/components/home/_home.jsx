@@ -68,7 +68,7 @@ export const Home = () => {
           <div key={project.id} className="border-2 rounded p-4">
             {project.title}
             <div>
-              <Button onClick={(() => navigate('/project/${project.id}'), { proj: project })}>Details</Button>
+              <Button onClick={() => navigate(`/project/${project.contextId}`)}>Details</Button>
             </div>
           </div>
         ))}

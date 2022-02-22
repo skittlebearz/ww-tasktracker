@@ -11,7 +11,7 @@ export class Task {
   userId: number;
 
   @Column()
-  parentProject: number;
+  parentProject: string;
 
   @Column()
   completionStatus: boolean;
