@@ -16,9 +16,19 @@ export class TasksService {
     });
   }
 
+  findAllForProject(parentProject: string): Promise<Task[]> {
+    return this.taskRepository.find({
+      where: { parentProject },
+    });
+  }
+
   createTask(task: Task): Promise<Task> {
     return this.taskRepository.save(task);
   }
+
+  //createTaskForProject(task: Task): Promise<Task> {
+  //  return this.taskRepository.save(task);
+  //}
 
   findTaskById(id: number, userId: number): Promise<Task[]> {
     return this.taskRepository.find({

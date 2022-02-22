@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, OneToMany, ManyToMany, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from 'typeorm';
 import { Generated } from 'typeorm';
 import { Task } from './task.entity';
 import { UserProject } from './user_project.entity';
