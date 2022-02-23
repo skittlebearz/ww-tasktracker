@@ -5,6 +5,8 @@ import { AuthContext } from '../../utils/auth_context';
 import { Button } from '../common/button';
 import { useParams } from 'react-router-dom';
 import { UpdateButtonVisible } from '../common/updateButtonVisible';
+import { CompletedTasks } from '../common/completedTasks';
+import { IncompleteTasks } from '../common/incompleteTasks';
 import { Tasks } from './tasks';
 
 export const Project = () => {
@@ -164,17 +166,34 @@ export const Project = () => {
 
       <div className="text-red-600">{errorMessage}</div>
 
-      <h1>Your Tasks:</h1>
+      <h1>Incomplete Tasks:</h1>
       <div className="flex-1">
         {tasks.map((task) => (
+          <IncompleteTasks task={task}>
           <div key={task.id} className="border-2 rounded p-4">
             {task.title}
             <div>{task.description}</div>
             <div>This should take about {task.timeEstimate} hours.</div>
             <UpdateButtonVisible task={task} userId={user.id} onClick={() => updateTaskStatus(task)}>Mark Complete</UpdateButtonVisible>
           </div>
+          </IncompleteTasks>
         ))}
       </div>
+
+      <h1>Completed Tasks:</h1>
+      <div className="flex-1">
+        {tasks.map((task) => (
+          <CompletedTasks task={task}>
+          <div key={task.id} className="border-2 rounded p-4">
+            {task.title}
+            <div>{task.description}</div>
+            <div>This should take about {task.timeEstimate} hours.</div>
+            <UpdateButtonVisible task={task} userId={user.id} onClick={() => updateTaskStatus(task)}>Mark Complete</UpdateButtonVisible>
+          </div>
+          </CompletedTasks>
+        ))}
+      </div>
+
 
       <h2>Add a contributor:</h2>
       <h2>Email address of contributor</h2>
