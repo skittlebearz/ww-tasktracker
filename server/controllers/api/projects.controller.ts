@@ -6,7 +6,7 @@ import { User } from 'server/entities/user.entity';
 import { UserRole } from 'server/entities/user_role.entity';
 import { ProjectsService } from 'server/providers/services/projects.service';
 import { UsersService } from 'server/providers/services/users.service';
-import { RoleKey } from 'server/entities/role.entity'
+import { RoleKey } from 'server/entities/role.entity';
 //import { UserProject } from 'server/entities/user_project.entity';
 import * as crypto from 'crypto';
 
@@ -15,7 +15,12 @@ class ProjectTitle {
 }
 
 class NewData {
-  users: User[]
+  users: User[];
+}
+
+class InviteBody {
+  email: string;
+  projectId: number;
 }
 
 @Controller()
@@ -29,9 +34,21 @@ export class ProjectsController {
     return { projects };
   }
 
+  @Get('/projects/:id/users')
+  public async users(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
+    const users = await this.projectsService.findAllForProject(parseInt(id, 10));
+    return { users };
+  }
+
+  @Get('/projectid/:contextId')
+  public async contextIdIndex(@Param('contextId') contextId: string, @JwtBody() jwtBody: JwtBodyDto) {
+    const id = await this.projectsService.getProjectId(contextId);
+    return { id };
+  }
+
   @Get('/projects/:id')
   public async idIndex(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
-    const project = await this.projectsService.findProjectById(parseInt(id, 10));
+    const project = await this.projectsService.findProjectById(parseInt(id, 10), jwtBody.userId);
     return { project };
   }
 
@@ -41,14 +58,13 @@ export class ProjectsController {
     let project = new Project();
     project.title = title.contents;
     project.leaderID = jwtBody.userId;
-    project.contextId = crypto.randomBytes(16).toString("hex");
+    project.contextId = crypto.randomBytes(16).toString('hex');
 
     project = await this.projectsService.createProject(project);
 
-
     //This should set up the many-many relationship, depending on userProject implementation
     //Add project to current user
-    await this.usersService.addUserToProject(jwtBody.userId, project.id)
+    await this.usersService.addUserToProject(jwtBody.userId, project.id);
 
     //Create the userRole with the correct context and Role
     await this.usersService.addUserToRoleInContext(jwtBody.userId, project.contextId, RoleKey.LEADER);
@@ -56,14 +72,10 @@ export class ProjectsController {
     return { project };
   }
 
-  @Patch('/projects/:id')
-  public async update(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() updates: NewData) {
-    for (let user of updates.users) {
-      //let userProject = new UserProject();
-      //userProject.userId = user.id;
-      //userProject.projectId = id;
-    }
-    //I don't think adding new tasks works through a patch
+  @Post('/projects/:id/adduser')
+  public async update(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() invite: InviteBody) {
+    var userId = await this.usersService.getIdFromEmail(invite.email);
+    const user = await this.usersService.addUserToProject(userId, invite.projectId);
+    return { user };
   }
-
 }

@@ -25,6 +25,9 @@ export class Task {
   @Column() // Units for timeEstimate are in hours, although this isn't set in stone
   timeEstimate: number;
 
+  @Column()
+  projectId: number;
+
   @ManyToOne(() => User, (user) => user.tasks)
   user: User;
 

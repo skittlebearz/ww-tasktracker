@@ -81,7 +81,24 @@ export class UsersService {
     return !isEmpty(intersection(roleKeys, usersRoleKeys));
   }
 
+  async getUsersName(id: number): Promise<string> {
+    const user = await this.usersRespository.find({
+      where: { id },
+    });
+    return user[0].firstName + " " + user[0].lastName;
+  }
+
   async hasRootRole(userId: number, ...roleKeys: RoleKey[]) {
     return this.hasRoleInContext(userId, 'root', ...roleKeys);
+  }
+
+  async getIdFromEmail(email: string) {
+    const user = await this.usersRespository.find({
+      where: { email },
+    });
+    if (!user) {
+      throw Error("Unable to find that person.");
+    }
+    return user[0].id;
   }
 }
