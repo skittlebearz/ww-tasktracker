@@ -96,6 +96,9 @@ export class UsersService {
     const user = await this.usersRespository.find({
       where: { email },
     });
+    if (!user) {
+      throw Error("Unable to find that person.");
+    }
     return user[0].id;
   }
 }

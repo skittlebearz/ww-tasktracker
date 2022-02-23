@@ -7,6 +7,7 @@ import { TasksService } from 'server/providers/services/tasks.service';
 
 class TaskPostBody {
   parentProject: number;
+  userId: number;
   completionStatus: boolean;
   title: string;
   description: string;
@@ -32,7 +33,7 @@ export class TasksController {
   @Post('/projects/:id/task')
   public async create(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskPostBody) {
     let task = new Task();
-    task.userId = jwtBody.userId;
+    task.userId = body.userId;
     task.parentProject = body.parentProject;
     task.completionStatus = body.completionStatus;
     task.title = body.title;

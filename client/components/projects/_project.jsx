@@ -43,6 +43,7 @@ export const Project = () => {
     const { users } = await api.get(`/projects/${id}/users`);
     console.log("Users:");
     console.log(users);
+    console.log(tasks);
     setTasks(tasks);
     setUsers(users);
 
@@ -66,7 +67,7 @@ export const Project = () => {
       return;
     }
     const taskBody = {
-      userId: taskName,
+      userId: assignedUser,
       parentProject: id,
       completionStatus: false,
       title: taskName,
@@ -96,6 +97,9 @@ export const Project = () => {
     console.log("User id:")
     console.log(id);
 
+    console.log("Users[0]:")
+    console.log(users[0]);
+
     const test = await api.get(`/projects/${id}/users`);
     console.log("Test:");
     console.log(test);
@@ -109,7 +113,12 @@ export const Project = () => {
 
   const updateTaskStatus = async (task) => {
     setCurrentTask(task);
+    console.log(task);
     await api.post(`/tasks/${task.id}`);
+  }
+
+  function userName(assignedUserId) {
+    return users[assignedUserId];
   }
 
   if (loading) {
@@ -136,11 +145,15 @@ export const Project = () => {
         onChange={(e) => setTimeEstimate(e.target.value)}
       />
       <h2>Assigned User</h2>
-      <textarea
-        className="p-2 border-2 rounded flex"
-        value={assignedUser}
-        onChange={(e) => setAssignedUser(e.target.value)}
-      />
+      
+      {users.map((currentUser) => (
+        <Button className="bg-gray-600 pt-2 pb-2 pr-4 pl-4 rounded-lg font-bold text-white" key={currentUser.id}>
+          <div key={currentUser.id} className="border-2 rounded p-4">
+            <div onClick={(e) => setAssignedUser(currentUser.id)}> {currentUser.firstName} {currentUser.lastName}</div>
+          </div>
+        </Button>
+      ))}
+      
       <h2>Task Description</h2>
       <textarea
         className="p-2 border-2 rounded flex"
@@ -156,7 +169,7 @@ export const Project = () => {
         {tasks.map((task) => (
           <div key={task.id} className="border-2 rounded p-4">
             {task.title}
-            <div>This task has been assigned to {users[task.assignedUser]}.</div>
+            <div>This task has been assigned to {userName(task.assignedUser)}.</div>
             <div>{task.description}</div>
             <div>This should take about {task.timeEstimate} hours.</div>
             <UpdateButtonVisible task={task} onClick={() => updateTaskStatus(task)}>Mark Complete</UpdateButtonVisible>

@@ -39,10 +39,11 @@ export class TasksService {
   }
 
   updateTaskById(id: number, userId: number): Promise<Task[]> {
-    const task = this.taskRepository.find({
+    var task = this.taskRepository.findOne({
       where: { userId, id },
     });
     task[0].completionStatus = true;
+
     return this.taskRepository.save(task[0]);
   }
 
