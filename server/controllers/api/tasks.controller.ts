@@ -51,7 +51,17 @@ export class TasksController {
   }
 
   @Post('tasks/:id/')
-  public async update(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
-    return await this.tasksService.updateTaskById(parseInt(id, 10), jwtBody.userId);
+  public async update(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskPostBody) {
+    let task = new Task;
+    task.id = parseInt(id, 10);
+    task.userId = body.userId;
+    task.parentProject = body.parentProject;
+    task.completionStatus = true;
+    task.title = body.title;
+    task.description = body.description;
+    task.timeEstimate = body.timeEstimate;
+    task.projectId = body.parentProject;
+      task = await this.tasksService.updateTask(task);
+    return { task };
   }
 }

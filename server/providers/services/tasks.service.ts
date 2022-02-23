@@ -38,13 +38,8 @@ export class TasksService {
     });
   }
 
-  updateTaskById(id: number, userId: number): Promise<Task[]> {
-    var task = this.taskRepository.findOne({
-      where: { userId, id },
-    });
-    task[0].completionStatus = true;
-
-    return this.taskRepository.save(task[0]);
+  updateTask(task: Task): Promise<Task> {
+    return this.taskRepository.save(task);
   }
 
   removeTask(task: Task) {
