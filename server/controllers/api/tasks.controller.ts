@@ -40,7 +40,7 @@ export class TasksController {
     task.description = body.description;
     task.timeEstimate = body.timeEstimate;
     task.projectId = body.parentProject;
-      task = await this.tasksService.createTask(task);
+    task = await this.tasksService.createTask(task);
     return { task };
   }
 
@@ -52,7 +52,7 @@ export class TasksController {
 
   @Post('tasks/:id/')
   public async update(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskPostBody) {
-    let task = new Task;
+    let task = new Task();
     task.id = parseInt(id, 10);
     task.userId = body.userId;
     task.parentProject = body.parentProject;
@@ -61,7 +61,7 @@ export class TasksController {
     task.description = body.description;
     task.timeEstimate = body.timeEstimate;
     task.projectId = body.parentProject;
-      task = await this.tasksService.updateTask(task);
+    task = await this.tasksService.updateTask(task);
     return { task };
   }
 }
