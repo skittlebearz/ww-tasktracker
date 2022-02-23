@@ -1,13 +1,19 @@
-export const UpdateButtonVisible = ({ task, children, ...other }) => {
+export const UpdateButtonVisible = ({ task, userId, children, ...other }) => {
   var visible = !task.completionStatus;
 
-    if (visible) {
+    if (visible && userId == task.userId) {
       return ( <button className="bg-gray-600 pt-2 pb-2 pr-4 pl-4 rounded-lg font-bold text-white"{...other}>
         {children}
       </button>);
     }
+    else if (visible) {
+      return ( <div>Relax, someone else will take care of this!</div> )
+    }
+    else if (userId == task.userId) {
+      return ( <div>You completed this! Nice job!</div> );
+    }
     else {
-      return ( <div>Completed!</div> );
+      return ( <div>Someone else completed this!</div> );
     };
 };
 

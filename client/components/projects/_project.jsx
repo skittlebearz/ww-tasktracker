@@ -169,10 +169,9 @@ export const Project = () => {
         {tasks.map((task) => (
           <div key={task.id} className="border-2 rounded p-4">
             {task.title}
-            <div>This task has been assigned to {userName(task.assignedUser)}.</div>
             <div>{task.description}</div>
             <div>This should take about {task.timeEstimate} hours.</div>
-            <UpdateButtonVisible task={task} onClick={() => updateTaskStatus(task)}>Mark Complete</UpdateButtonVisible>
+            <UpdateButtonVisible task={task} userId={user.id} onClick={() => updateTaskStatus(task)}>Mark Complete</UpdateButtonVisible>
           </div>
         ))}
       </div>
