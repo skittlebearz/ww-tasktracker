@@ -23,9 +23,9 @@ export class TasksController {
   //   return { tasks };
   // }
 
-  @Get('/project/:id/tasks')
+  @Get('/projects/:id/tasks')
   public async projIdIndex(@Param('id') id: string) {
-    const tasks = await this.tasksService.findAllForProject(id);
+    const tasks = await this.tasksService.findAllForProject(parseInt(id, 10));
     return { tasks };
   }
 
@@ -38,7 +38,8 @@ export class TasksController {
     task.title = body.title;
     task.description = body.description;
     task.timeEstimate = body.timeEstimate;
-    task = await this.tasksService.createTask(task);
+    task.projectId = body.parentProject;
+      task = await this.tasksService.createTask(task);
     return { task };
   }
 
@@ -46,5 +47,10 @@ export class TasksController {
   public async idIndex(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const task = await this.tasksService.findTaskById(parseInt(id, 10), jwtBody.userId);
     return { task };
+  }
+
+  @Post('tasks/:id/')
+  public async update(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
+    return await this.tasksService.updateTaskById(parseInt(id, 10), jwtBody.userId);
   }
 }

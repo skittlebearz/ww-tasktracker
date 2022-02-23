@@ -16,11 +16,13 @@ export class TasksService {
     });
   }
 
-  findAllForProject(parentProject: string): Promise<Task[]> {
-    return this.taskRepository.find({
+  async findAllForProject(parentProject: number): Promise<Task[]> {
+    const tasks = this.taskRepository.find({
       where: { parentProject },
     });
+    return tasks;
   }
+
 
   createTask(task: Task): Promise<Task> {
     return this.taskRepository.save(task);
@@ -36,7 +38,16 @@ export class TasksService {
     });
   }
 
+  updateTaskById(id: number, userId: number): Promise<Task[]> {
+    const task = this.taskRepository.find({
+      where: { userId, id },
+    });
+    task[0].completionStatus = true;
+    return this.taskRepository.save(task[0]);
+  }
+
   removeTask(task: Task) {
     this.taskRepository.delete(task);
   }
 }
+

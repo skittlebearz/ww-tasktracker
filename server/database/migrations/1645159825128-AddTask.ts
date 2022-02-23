@@ -42,6 +42,11 @@ export class AddTask1645159825128 implements MigrationInterface {
                 type: 'int',
                 isNullable: false,
               },
+              {
+                name: 'projectId',
+                type: 'int',
+                isNullable: false,
+              },
             ],
           }),
         );
