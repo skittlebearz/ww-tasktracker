@@ -61,7 +61,11 @@ export class TasksController {
     task.description = body.description;
     task.timeEstimate = body.timeEstimate;
     task.projectId = body.parentProject;
+    if (jwtBody.userId == task.userId) {
       task = await this.tasksService.updateTask(task);
+    } else {
+      task.completionStatus = false;
+    }
     return { task };
   }
 }
